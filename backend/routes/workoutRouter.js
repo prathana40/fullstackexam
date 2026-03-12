@@ -1,5 +1,6 @@
-const express = require("express");
+ const express = require("express");
 const router = express.Router();
+const requireAuth = require("../middleware/requireAuth");
 const {
   getAllWorkouts,
   createWorkout,
@@ -8,19 +9,11 @@ const {
   deleteWorkout,
 } = require("../controllers/workoutControllers");
 
-// GET /api/workouts
-router.get("/", getAllWorkouts);
-
-// POST /api/workouts
-router.post("/", createWorkout);
-
-// GET /api/workouts/:workoutId
-router.get("/:workoutId", getWorkoutById);
-
-// PUT /api/workouts/:workoutId
-router.put("/:workoutId", updateWorkout);
-
-// DELETE /api/workouts/:workoutId
-router.delete("/:workoutId", deleteWorkout);
+// All routes are protected by requireAuth
+router.get("/", requireAuth, getAllWorkouts);
+router.post("/", requireAuth, createWorkout);
+router.get("/:workoutId", requireAuth, getWorkoutById);
+router.put("/:workoutId", requireAuth, updateWorkout);
+router.delete("/:workoutId", requireAuth, deleteWorkout);
 
 module.exports = router;
